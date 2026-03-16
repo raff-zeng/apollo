@@ -751,6 +751,9 @@ function run_bazel() {
   if [[ -n "${CUSTOM_JOB_ARGS}" ]]; then
     job_args="${CUSTOM_JOB_ARGS}"
   else
+    if [[ -n "${APOLLO_BUILD_JOBS}" ]]; then
+      count="${APOLLO_BUILD_JOBS}"
+    fi
     if [[ $(uname -m) == "x86_64" ]]; then
       job_args="--copt=-mavx2 --host_copt=-mavx2 --jobs=${count} --local_ram_resources=HOST_RAM*0.7"
     else

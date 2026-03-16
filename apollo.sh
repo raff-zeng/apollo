@@ -74,6 +74,9 @@ function apollo_env_setup() {
 
   APOLLO_ENV="STAGE=${STAGE}"
   APOLLO_ENV="${APOLLO_ENV} USE_ESD_CAN=${USE_ESD_CAN}"
+  if [[ -n "${APOLLO_BUILD_JOBS}" ]]; then
+    APOLLO_ENV="${APOLLO_ENV} APOLLO_BUILD_JOBS=${APOLLO_BUILD_JOBS}"
+  fi
   # Add more here ...
 
   info "${BLUE}Apollo Environment Settings:${NO_COLOR}"
