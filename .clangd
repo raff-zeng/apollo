@@ -3,7 +3,7 @@
 
 CompileFlags:
   # compile_commands.json is generated at the repo root in the dev container,
-  # then path-rewritten for the host. See CLAUDE.md → "clangd 跳转 / 补全".
+  # then path-rewritten for the host by tools/clangd/normalize_compile_commands.py.
   CompilationDatabase: .
 
   # Fallback flags for files not yet covered by compile_commands.json.
@@ -11,6 +11,30 @@ CompileFlags:
     - -std=c++17
     - -I.
     - -Ithird_party/eigen3
+    # clangd's own driver picks the newest GCC install it finds (gcc-12 here,
+    # without libstdc++ headers). Point it at the host's actual libstdc++.
+    # Do not add /usr/lib/gcc/.../include: it shadows clang's intrinsic headers.
+    - -isystem
+    - /usr/include/c++/11
+    - -isystem
+    - /usr/include/x86_64-linux-gnu/c++/11
+    - -isystem
+    - /usr/include/c++/11/backward
+    # /opt/apollo/sysroot and /usr/local/include only exist inside the dev
+    # container. tools/clangd/sync_sysroot.sh copies them into .cache/.
+    - -isystem
+    - .cache/apollo-sysroot/include
+    - -isystem
+    - .cache/apollo-sysroot/local-include
+    - -isystem
+    - .cache/apollo-sysroot/fast-rtps/include
+    - -isystem
+    - .cache/apollo-sysroot/absl/include
+    - -isystem
+    - .cache/apollo-sysroot/pkgs/adv_plat/include
+    - --cuda-path=/home/zrf/apollo/.cache/apollo-sysroot/cuda-11.8
+    - --cuda-gpu-arch=sm_35
+    - -nocudalib
 
 Index:
   # Background-index the workspace for cross-file navigation.
