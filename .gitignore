@@ -1,6 +1,9 @@
 # Bazel
 bazel-*
 
+# clangd generated compilation database (machine-specific, generated in container)
+compile_commands.json
+
 # Temporary files
 *.pyc
 *.swp

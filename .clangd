@@ -1,0 +1,17 @@
+# clangd configuration for Apollo.
+# Docs: https://clangd.llvm.org/config
+
+CompileFlags:
+  # compile_commands.json is generated at the repo root in the dev container,
+  # then path-rewritten for the host. See CLAUDE.md → "clangd 跳转 / 补全".
+  CompilationDatabase: .
+
+  # Fallback flags for files not yet covered by compile_commands.json.
+  Add:
+    - -std=c++17
+    - -I.
+    - -Ithird_party/eigen3
+
+Index:
+  # Background-index the workspace for cross-file navigation.
+  Background: Build
